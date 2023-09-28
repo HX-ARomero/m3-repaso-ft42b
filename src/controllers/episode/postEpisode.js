@@ -1,8 +1,8 @@
 const axios = require("axios");
-const allEpisodes = require("../utils/allEpisodes");
+const allEpisodes = require("../../utils/allEpisodes");
 
 //* POST /episode/:email/:id
-const getEpisode = async (req, res) => {
+const postEpisode = async (req, res) => {
     try {
         const { email, id } = req.params;
 
@@ -30,4 +30,4 @@ const getEpisode = async (req, res) => {
     }
 }
 
-module.exports = getEpisode;
+module.exports = postEpisode;

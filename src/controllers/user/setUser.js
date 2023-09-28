@@ -1,4 +1,4 @@
-const allEpisodes = require("../utils/allEpisodes");
+const allEpisodes = require("../../utils/allEpisodes");
 
 const setUser = (req, res) => {
     const { name, email, password } = req.body;

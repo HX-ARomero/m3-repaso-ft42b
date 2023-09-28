@@ -1,13 +1,18 @@
 const express = require("express");
-const getEpisode = require("../controllers/getEpisode");
+const { getEpisode, postEpisode, putEpisode, deleteEpisode } = require("../controllers");
+
 const episodeRouter = express.Router();
 
-//* GET /episode
-episodeRouter.get("/", (req, res) => {
-    res.status(200).send("GET /episode");
-})
+//* GET /episode/:email?id=2
+episodeRouter.get("/:email", getEpisode);
 
 //* POST /episode/:email/:id
-episodeRouter.post("/:email/:id", getEpisode);
+episodeRouter.post("/:email/:id", postEpisode);
+
+//* PUT /episode/:email
+episodeRouter.put("/:email", putEpisode);
+
+//* DELETE /episode/:email/:id
+episodeRouter.delete("/:email/:id", deleteEpisode);
 
 module.exports = episodeRouter;
