@@ -1,5 +1,5 @@
 const express = require("express");
-const { setUser } = require("../controllers");
+const { postUser } = require("../controllers");
 
 const userRouter = express.Router();
 
@@ -9,6 +9,6 @@ userRouter.get("/", (req, res) => {
 })
 
 //* POST /user
-userRouter.post("/", setUser);
+userRouter.post("/", postUser);
 
 module.exports = userRouter;

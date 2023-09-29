@@ -27,7 +27,7 @@ Desarrollar el servidor de una App que permita administrar episodios, mediante l
 Se entrega un boilerplate con la siguiente estructura:
 
 ```
-/ 08-todoapp
+/ m3-repaso-ft42b
     / src
         / controllers
         / routes
@@ -75,12 +75,12 @@ app.use((req, res, next) => {
 });
 ```
 
-## 5. Estructura de Episodes
-- Crearemos y exportaremos dentro de la carpeta "utils" el archivo "allEpisodes.js", y dentro de este archivo la variable "allEpisodes" (no olvides exportarlo...).
-  - Será un array, donde almacenaremos todos los "episodes".
-    - Nuestros episodes tendrán la siguiente estructura:
+## 5. Estructura de allUsers
+- Crearemos y exportaremos dentro de la carpeta "utils" el archivo "allUsers.js", y dentro de este archivo la variable "allUsers" (no olvides exportarlo...).
+  - Será un array, donde almacenaremos todos los "usuarios".
+    - Nuestros usuarios tendrán la siguiente estructura:
 ```js
-allEpisodes = [
+allUsers = [
   {
     name: "Rick",
     email: "rick@gmail.com",
@@ -96,9 +96,10 @@ allEpisodes = [
   }
 ]
 ```
-- Tomaremos por id del owner su mail.
-- Cada "episode" se almacenará dentro del array "episodes".
-- El id de cada "episode" será la fecha de posteo.
+- Tomaremos por id del usuario su mail.
+  - Cada usuario tendrá la propiedad "episodes" que será un array.
+    - Cada "episode" será un objeto, y se almacenará dentro del array "episodes".
+    - Tomaremos la propiedad "name" y "episode" de la Rick&Morty API.
 
 ## 6. Ruta POST /user
 - Recibe por body los datos necesarios: name, email y password.
@@ -113,15 +114,26 @@ allEpisodes = [
 - Update: Actualizar
 - Delete: Borrar
 
-### POST /episode/:email
-- Recibe los datos del episode por body y el id del usuario (email) por params.
+### POST /episode/:email/:id
+- Tomaremos la propiedad "name" y "episode" de la Rick&Morty API.
+  - Instalaremos "axios":
+```bash
+npm install axios
+```
+- Recibe por params el id del usuario (email), y el id del episodio que deseamos agregar.
 - Si el usuario existe:
-  - Crea un nuevo "episode" y lo agrega al array de "episodes" del usuario.
-  - Recuerda que no recibiremos el "id" del episodio, se lo asignaremos nosotros. La propiedad "completed" se inicializará en true.
+  - Realiza la petición "axios" a la siguiente url:
+    - `https://rickandmortyapi.com/api/episode/${id}`
+  - Crea un nuevo "episode" con las propiedades:
+    - id: podemos utilizar la que llega por params (de tipo string)
+    - name: toma el valor desde lo recibido por la API
+    - episode:
+    - completed: que se inicializa en false
+  - Agrega el episodio creado al array de "episodes" del usuario.
   - Devuelve el array de "episodes" del usuario.
 - Si el usuario no existe, devuelve un mensaje indicativo.
 
-### GET /todos/:email?id=idDelEpisodio
+### GET /episode/:email?id=idDelEpisodio
 - Recibe el id (email) del usuario por params.
 - Recibe el id del episode por query.
 - Si existe el usuario:
@@ -143,22 +155,33 @@ allEpisodes = [
   - Si no encuentra episode que borrar envía mensaje indicativo.
 
 ## 8. Extras
-- Crear ruta para validar credenciales de usuario:
-  - email y password
-- Crear función que encuentre los episodios del usuario, modularizando esta tarea que realizamos en muchos de los controllers.
-- Crear ruta PUT /episode/:email/:id
-  - Recibe por params el email del usuario y el id del episode.
-    - Cambia la propiedad "completed" del episode a true (si es que la encuentra).
-    - Devuelve el arreglo de todos los episodios del usuario.
-    - Si no encuentra el episode, devuelve un mensaje indicativo.
-- Agregar otras rutas con nuevas funcionalidades.
 
-## 9. Extra - AXIOS
-- Crear ruta "/episodes/api/:email/:id"
-  - Se envía el id de usuario (email) y un id (numérico) por params.
-  - Buscar en la api de Rick & Morty el episodio con el id indicado y agregarlo al array episodes del usuario, gruardando sólo el id, name y episode.
-  - Utilizar axios y la siguiente url:
-    - `https://rickandmortyapi.com/api/episode/${id}`
+### Crear ruta para validar credenciales de usuario
+  - email y password
+
+### Crear función "getActualUser"
+- Modularizar la tarea que repetimos en cada ruta:
+- Creamos una carpeta "functions" y allí dentro el archivo "getActualUser.js".
+  - Dentro de este archivo creamos y exportamos la función "getActualUser".
+  - La función "getActualUser":
+    - Recibe por parémetro "req y res"
+    - Verifica que el usuario se encuentre registrado (que exista el mail recibido por params).
+    - Busca los episodios del usuario y los retorna.
+    - En caso de no encontrar usuario registrado retorna un mensaje indicativo.
+- Utilizamos la función creada en los controladores de "episodes"
+### Crear ruta PUT /episode/:email/:id
+- Recibe por params el email del usuario y el id del episode.
+  - Cambia la propiedad "completed" del episode a true (si es que la encuentra).
+  - Devuelve el arreglo de todos los episodios del usuario.
+  - Si no encuentra el episode, devuelve un mensaje indicativo.
+- Agregar otras rutas con nuevas funcionalidades.
+### Modularizar controllers
+- Creando dentro de la carpeta "controllers":
+	- Una carpeta "user"
+	- Una carpeta "episodes"
+	- Un archivo "index.js" desde donde exportaremos todos los controllers
+### Retornar errores y no solo mensajes
+- Investiga acerca de throw Error() para devolver errores.
 
 _____
 

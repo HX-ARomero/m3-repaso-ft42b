@@ -1,8 +1,8 @@
 const getActualUser = require("../../functions/getActualUser");
-const allEpisodes = require("../../utils/allEpisodes");
+// const allUsers = require("../../utils/allUsers");
 
 const getEpisode = (req, res) => {
-    const { email } = req.params;
+    // const { email } = req.params;
     const { id } = req.query;
 
     const userEpisodes = getActualUser(req, res);
